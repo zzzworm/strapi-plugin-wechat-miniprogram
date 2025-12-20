@@ -1,4 +1,156 @@
-# strapi-plugin-wechat-miniprogram
+## Langauge
+[English](#description)
+[中文](#简介)
+
+## Description
+A Strapi v5 plugin for WeChat Mini Program APIs.
+This plugin creates a collection table `WechatUser` and a simple table `WechatConfig`. The `WechatUser` table stores `WeChat` user information, with a `user` field linking to the `wechat_user` relation in the `User` table. The `WechatConfig` table stores WeChat Mini Program configuration, such as `appId` and `appSecret`.
+
+## Installation
+`npm i strapi-plugin-wechat-miniprogram`
+
+## WeChat Login
+- Method：`POST`
+- Path：`STRAPI_URL/api/strapi-plugin-wechat-miniprogram/login`
+- body parameters：
+  
+| Parameter  | Type  | Required  |
+| ------------ | ------------ | :----------: |
+| openidCode  | string  | √ |
+| phoneCode  | string  |  |
+- Permission `public`  
+  
+When only `openidCode` is provided, a user will be created with `openid` as the primary key.
+``` json
+{
+    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNzYzNzkxNjMyLCJleHAiOjE3NjYzODM2MzJ9.xoZjtImtn1klQoLL5Xrrcvcy5KnPFDMaHvcAHGUtx0c",
+    "user": {
+        "id": 7,
+        "documentId": "bavikfbi4okjwoc5qq720x56",
+        "username": "obDKA13HPuz9C5BWppYpRm1uJ9Cs",
+        "email": "obDKA13HPuz9C5BWppYpRm1uJ9Cs@example.com",
+        "provider": null,
+        "confirmed": true,
+        "blocked": false,
+        "createdAt": "2025-11-20T09:57:03.063Z",
+        "updatedAt": "2025-11-20T09:57:03.063Z",
+        "publishedAt": "2025-11-20T09:57:02.997Z"
+    }
+}
+```
+When both `openidCode` and `phoneCode` are provided, a user will be created with the phone number as the primary key.
+``` json
+{
+    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTc2Mzk3MTIwNCwiZXhwIjoxNzY2NTYzMjA0fQ.rZ0_9gBILUl25TNAQSXnPmJ2Je2ZrhV45D2kdX66IZY",
+    "user": {
+        "id": 11,
+        "documentId": "jrzss6zc1gas8toy9ddhzy27",
+        "username": "XXXXXXXXXXX",
+        "email": "XXXXXXXXXXX@example.com",
+        "provider": null,
+        "confirmed": true,
+        "blocked": false,
+        "createdAt": "2025-11-24T08:00:04.572Z",
+        "updatedAt": "2025-11-24T08:00:04.572Z",
+        "publishedAt": "2025-11-24T08:00:04.502Z"
+    }
+}
+```
+
+## Get Phone Number
+
+The code for obtaining a phone number is obtained differently from the code retrieved via `wx.login()`.
+
+### uniapp
+```
+<template>
+    <button open-type="getPhoneNumber" @getphonenumber="getphonenumber">获取手机号</button>
+</template>
+
+<script setup lang="ts">
+const getphonenumber = (e) => {
+    const code = e.detail.code
+}
+</script>
+```
+
+- Method：`POST`
+- Path：`STRAPI_URL/api/strapi-plugin-wechat-miniprogram/getPhoneNumber`
+- body parameters：
+  
+| Parameter  | Type  | Required  |
+| ------------ | ------------ | :----------: |
+| code  | string  | √ |
+- Permission： `public`  
+
+Response is consistent with the official WeChat documentation.
+``` json
+{
+    "errcode": 0,
+    "errmsg": "ok",
+    "phone_info": {
+        "phoneNumber": "XXXXXXXXXXX",
+        "purePhoneNumber": "XXXXXXXXXXX",
+        "countryCode": "86",
+        "watermark": {
+            "timestamp": 1763791978,
+            "appid": "wxXXXXXXXXXXXX"
+        }
+    }
+}
+```
+
+## Get openid
+- Method：`POST`
+- Path：`STRAPI_URL/api/strapi-plugin-wechat-miniprogram/auth/openid`
+- body parameters:
+  
+| Parameter  | Type  | Required  |
+| ------------ | ------------ | :----------: |
+| code  | string  | √ |
+- Permission： `public`
+
+Response is consistent with the official WeChat documentation.
+``` json
+{
+    "session_key": "kkniNl6BcQVLFIoM37vg8g==",
+    "openid": "obDKA13HPuz9C5BWppYpRm1uJ9Cs"
+}
+```
+
+## Update User Info
+- Method：`POST`
+- Path： `STRAPI_URL/api/strapi-plugin-wechat-miniprogram/auth/update`
+- Header：`Authorization: Bearer USER_TOKEN`
+- body parameters：
+  
+| Parameter  | Type  | Required  |
+| ------------ | ------------ | ------------ |
+| nickname  | string  |  |
+| avatar  | string  |  |
+| phone  | string  |  |  
+- Permission： `Authenticated`  
+
+``` json
+{
+    "code": 0,
+    "message": "更新成功",
+    "data": {
+        "id": 9,
+        "documentId": "mmr74jzbknf740spef1vka6m",
+        "openid": "obDKA13HPuz9C5BWppYpRm1uJ9Cs",
+        "nickname": "理塘策马大王",
+        "avatar": null,
+        "phone": null,
+        "createdAt": "2025-11-20T09:57:03.073Z",
+        "updatedAt": "2025-11-22T06:17:46.975Z",
+        "publishedAt": "2025-11-22T06:17:46.985Z",
+        "locale": null
+    }
+}
+```
+
+# 简介
 适用于 strapi v5 微信小程序 api 插件  
 此插件会创建一个集合表 WechatUser 和一个简单表 WechatConfig，其中 WechatUser 表为微信用户表，字段 user 与 User 表 wechat_user 关联；WechatConfig 表为微信小程序配置，可设置 appId 和 appSecret。
 
