@@ -1,5 +1,5 @@
 {
-  "version": "1.0.11",
+  "version": "1.0.12",
   "keywords": [
     "strapi",
     "plugin",
@@ -21,6 +21,7 @@
     "dist"
   ],
   "scripts": {
+    "prepare": "npm install && npm run build",
     "build": "strapi-plugin build",
     "watch": "strapi-plugin watch",
     "watch:link": "strapi-plugin watch:link",
