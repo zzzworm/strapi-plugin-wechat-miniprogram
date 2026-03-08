@@ -8,7 +8,7 @@ export default {
         "tableName": 'WeChatUsers'
     },
     "options": {
-        "draftAndPublish": true
+        "draftAndPublish": false
     },
     "pluginOptions": {
         "content-manager": {
