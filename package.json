@@ -1,5 +1,5 @@
 {
-  "version": "1.0.12",
+  "version": "1.0.13",
   "keywords": [
     "strapi",
     "plugin",
@@ -21,8 +21,8 @@
     "dist"
   ],
   "scripts": {
-    "prepare": "npm run build",
     "build": "strapi-plugin build",
+    "prepack": "npm run build",
     "watch": "strapi-plugin watch",
     "watch:link": "strapi-plugin watch:link",
     "verify": "strapi-plugin verify",
@@ -51,11 +51,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/SnhAenIgseAl/strapi-plugin-wechat-miniprogram.git"
+    "url": "git+https://github.com/zzzworm/strapi-plugin-wechat-miniprogram.git"
   },
   "bugs": {
-    "url": "https://github.com/SnhAenIgseAl/strapi-plugin-wechat-miniprogram/issues"
+    "url": "https://github.com/zzzworm/strapi-plugin-wechat-miniprogram/issues"
   },
-  "homepage": "https://github.com/SnhAenIgseAl/strapi-plugin-wechat-miniprogram#readme",
+  "homepage": "https://github.com/zzzworm/strapi-plugin-wechat-miniprogram#readme",
   "author": "SnhAneIgseAl <1789561096@qq.com>"
 }
